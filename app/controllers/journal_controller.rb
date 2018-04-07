@@ -15,7 +15,8 @@ class JournalController < ActionController::Base
 		@journals = Journal.all
 
 		respond_to do |format|
-			 format.json { render :json => @journals }
+			msg = { :status => "ok", :message => @journals }
+			format.json { render :json => msg }
 	 	end
 	end
 
@@ -23,15 +24,8 @@ class JournalController < ActionController::Base
 		@journals = Journal.where(:title => params[:journal][:title])
 
 		respond_to do |format|
-			 format.json { render :json => @journals }
-	 	end
-	end
-
-	def getJournal # GET /journal/ query 'id'
-		@journal = Journal.find(:id =>  params[:journal][:id])
-
-		respond_to do |format|
-			 format.json { render :json => @journal }
+			msg = { :status => "ok", :message => @journals }
+			format.json { render :json => msg }
 	 	end
 	end
 end

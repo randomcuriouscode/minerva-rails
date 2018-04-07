@@ -8,7 +8,7 @@ class EntController < ActionController::Base
 
 	def postEntry # POST /journals/{id}/entry JSON reqdata
 		@today_date = Date.today.to_s
-		@journal = Journal.find_or_create_by(:id => params[:id])
+		@journal = Journal.find(params[:id])
 		@name = params[:ent][:title]
 		@body = params[:ent][:body]
 		@log.debug("PostEntry : Body received: #{@body}")
@@ -23,14 +23,45 @@ class EntController < ActionController::Base
 	end
 
 	def updateEntry # PUT /entry/{entry id}
+		@entry = Ent.find(params[:id])
+		@entry.update_attributes(params.require(:ent).permit(:title, :body))
 
+		respond_to do |format|
+    		msg = { :status => "ok", :message => @entry.id }
+    		format.json { render :json => msg }
+		end
+	end
+
+	def searchEntries # POST /entries/search json title
+		query = params[:ent][:title]
+		@log.debug('EntController::searchEntries: Got query title: "%s"' % query)
+		# match .*titles.* and order in descending creation order
+		@entries = Ent.order(:created_at => :desc).
+						where('title like ?', "%#{query}%")
+
+		respond_to do |format|
+    		msg = { :status => "ok", :message => @entries }
+    		format.json { render :json => msg }
+		end		
 	end
 
 	def getFullEntry # GET /entry/{entry id}
-		@entry = Ent.find(:id => params[:entry][:id])
+		@log.debug("EntController::getFullEntry: Request: %s" % params.inspect)
+		@entry = Ent.find(params[:id])
 
 		respond_to do |format|
-			 format.json { render :json => @entry }
+			msg = { :status => "ok", :message => @entry }
+			format.json { render :json => msg }
+	 	end
+	end
+
+	def getEntries # Get /entries/:journal_id
+		@entries = Ent.order(:created_at => :desc).
+					where(:journal_id => params[:journal_id])
+
+		respond_to do |format|
+			msg = { :status => "ok", :message => @entries }
+			format.json { render :json => msg }
 	 	end
 	end
 end
