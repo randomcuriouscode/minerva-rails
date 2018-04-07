@@ -1,6 +1,6 @@
 class TestController < ApplicationController
 
 	def test
-		puts params
+		puts "the params are :" + params.inspect
 	end
 end
