@@ -21,4 +21,16 @@ class EntController < ActionController::Base
     		format.json { render :json => msg }
 		end
 	end
+
+	def updateEntry # PUT /entry/{entry id}
+
+	end
+
+	def getFullEntry # GET /entry/{entry id}
+		@entry = Ent.find(:id => params[:entry][:id])
+
+		respond_to do |format|
+			 format.json { render :json => @entry }
+	 	end
+	end
 end

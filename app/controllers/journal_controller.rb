@@ -10,7 +10,7 @@ class JournalController < ActionController::Base
 	def createJournal # POST /journals/
 		@journal = Journal.create(:title => params[:journal][:title])
 	end
-	
+
 	def getAllJournals # GET /journals/all
 		@journals = Journal.all
 
@@ -34,17 +34,4 @@ class JournalController < ActionController::Base
 			 format.json { render :json => @journal }
 	 	end
 	end
-
-	def updateEntry # PUT /entry/{entry id}
-
-	end
-
-	def getFullEntry # GET /entry/{entry id}
-		@entry = Ent.find(:id => params[:entry][:id])
-
-		respond_to do |format|
-			 format.json { render :json => @entry }
-	 	end
-	end
-
 end
