@@ -1,7 +1,7 @@
 Minerva Rails
 ================
 
-Minerva is a Ruby on Rails + Bootstrap + CSS + Javascript journaling application
+Minerva is a Ruby on Rails + Bootstrap + CSS + React.JS journaling application
 
 The primary features supported are:
 
@@ -34,6 +34,13 @@ This application requires:
 
 Getting Started
 ---------------
+
+To setup `React-Rails`, execute:
+
+```
+$ rails webpacker:install
+$ rails webpacker:install:react
+```
 
 If issues are encountered with the `responders` gem, execute:
 
