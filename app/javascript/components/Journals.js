@@ -54,6 +54,7 @@ export default class Journals extends React.Component {
     this.onJournalSubmit = this.onJournalSubmit.bind(this)
     this.onNewJournalClick = this.onNewJournalClick.bind(this)
     this.populateJournals = this.populateJournals.bind(this)
+    this.appendJournalState = this.appendJournalState.bind(this)
 
     getAllJournals((res) => {
       console.log(res)
@@ -79,11 +80,22 @@ export default class Journals extends React.Component {
     return rows;
   } 
 
+  appendJournalState(newEntry)
+  {
+    var newState = this.state.journals.concat([newEntry]);
+    this.setState({journals: newState});
+  }
+
   onJournalSubmit(e, title) { // handle new journal submit from NewJournalForm
     e.preventDefault()
     this.setState({newJournal: false})
-    console.log("Got a journal!" + title) 
+    console.log("onJournalSubmit: Got a journal!" + title) 
     // TODO contact backend, write journal, render new entry in journal table
+
+    createJournal(title, (res) => {
+      console.log('onJournalSubmit: Journal created: ' + JSON.stringify(res))
+      this.appendJournalState(res)
+    });
   }
 
   onNewJournalClick(e) { // show the new journal form on btn click

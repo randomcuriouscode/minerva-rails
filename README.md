@@ -59,6 +59,7 @@ Documentation and Support
 
 Issues
 -------------
+1. If the database is modified from an external source (ex. a second client), the page must be reloaded, there is no polling for new data.
 
 Similar Projects
 ----------------
