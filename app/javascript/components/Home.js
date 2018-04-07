@@ -30,11 +30,10 @@ class Home extends React.Component {
   componentDidMount() {
     this.refresh();
   }
-
+//<HelloWorld name={this.props.name}/>
   render() {
     return (
       <div>
-        <HelloWorld name={this.props.name}/>
         <HomeItem />
         <Journals onJournalClicked={this.onJournalClicked}/>
       </div>
