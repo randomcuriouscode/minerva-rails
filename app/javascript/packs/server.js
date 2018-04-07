@@ -5,14 +5,12 @@
 /**
 * Properly configure+send an XMLHttpRequest with error handling,
 * authorization token, and other needed properties.
+* From CS326.
 */
 function sendXHR(verb, resource, body, cb) {
   var xhr = new XMLHttpRequest();
   xhr.open(verb, resource);
   xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-  // Otherwise, ESLint would complain about it! (See what happens in Atom if
-  // you remove the comment...)
-  /* global AppleError */
   // Response received from server. It could be a failure, though!
   xhr.addEventListener('load', function() {
     var statusCode = xhr.status;
@@ -26,7 +24,7 @@ function sendXHR(verb, resource, body, cb) {
       // The server may have included some response text with details concerning
       // the error.
       var responseText = xhr.responseText;
-      AppleError('Could not ' + verb + " " + resource + ": Received " +
+      console.error('Could not ' + verb + " " + resource + ": Received " +
       statusCode + " " + statusText + ": " + responseText);
     }
   });
@@ -63,4 +61,50 @@ function sendXHR(verb, resource, body, cb) {
     default:
     throw new Error('Unknown body type: ' + typeof(body));
   }
+}
+
+export function createJournal(title, cb){
+  sendXHR('POST', '/journals', {'title' : title}, (xhr) => {
+      cb(JSON.parse(xhr.responseText));
+    });
+}
+
+export function getAllJournals(cb){
+  sendXHR('GET', '/journals/all', undefined, (xhr) => {
+      cb(JSON.parse(xhr.responseText));
+    });
+}
+
+export function searchJournals(query, cb){
+  sendXHR('GET', '/journals/search', {'title' : query}, (xhr) => {
+      cb(JSON.parse(xhr.responseText));
+    });
+}
+
+export function postEntry(journal_id, title, body, cb){
+  sendXHR('GET', '/journals/' + journal_id + '/entry', 
+        {'title' : title, 'body' : body}, (xhr) => {
+        cb(JSON.parse(xhr.responseText));
+  });
+}
+
+export function getEntries(journal_id, cb){
+  sendXHR('GET', '/entries/' + journal_id, 
+        undefined, (xhr) => {
+        cb(JSON.parse(xhr.responseText));
+  });
+}
+
+export function updateEntry(entry_id, title, body, cb){
+  sendXHR('PUT', '/entry/' + entry_id, 
+        {'title' : title, 'body' : body}, (xhr) => {
+        cb(JSON.parse(xhr.responseText));
+  });
+}
+
+export function getFullEntry(entry_id, cb){
+  sendXHR('GET', '/entry/' + entry_id, 
+        undefined, (xhr) => {
+        cb(JSON.parse(xhr.responseText));
+  });
 }

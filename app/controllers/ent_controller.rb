@@ -32,19 +32,6 @@ class EntController < ActionController::Base
 		end
 	end
 
-	def searchEntries # POST /entries/search json title
-		query = params[:ent][:title]
-		@log.debug('EntController::searchEntries: Got query title: "%s"' % query)
-		# match .*titles.* and order in descending creation order
-		@entries = Ent.order(:created_at => :desc).
-						where('title like ?', "%#{query}%")
-
-		respond_to do |format|
-    		msg = { :status => "ok", :message => @entries }
-    		format.json { render :json => msg }
-		end		
-	end
-
 	def getFullEntry # GET /entry/{entry id}
 		@log.debug("EntController::getFullEntry: Request: %s" % params.inspect)
 		@entry = Ent.find(params[:id])

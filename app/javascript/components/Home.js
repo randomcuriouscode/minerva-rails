@@ -4,8 +4,7 @@ import HelloWorld from './HelloWorld'
 import Journals from './Journals'
 
 /*
-The component for the Home page, which will contain HomeBody components as
-children.
+The component for the Home page. Contains all the presentation logic for handling showing of children based on child state
 */
 class Home extends React.Component {
   constructor(props) {
@@ -13,6 +12,13 @@ class Home extends React.Component {
     this.state = {
       contents: []
     };
+    this.onJournalClicked = this.onJournalClicked.bind(this)
+  }
+
+  onJournalClicked(e, id)
+  {
+    e.preventDefault()
+    console.log("Home received the journal click event!")
   }
 
   /*
@@ -30,7 +36,7 @@ class Home extends React.Component {
       <div>
         <HelloWorld name={this.props.name}/>
         <HomeItem />
-        <Journals />
+        <Journals onJournalClicked={this.onJournalClicked}/>
       </div>
       );
   }
