@@ -1,21 +1,24 @@
-class EntsController < ActionController::Base
-	def createEntry # POST /entry/
+class EntController < ActionController::Base
+	before_action :__init__
 
+	def __init__
+		@log = Logger.new($stderr)
+		@log.level = Logger::DEBUG   # or Logger::INFO
 	end
 
-	def postEntry # POST /journals/{id}/entry
-		today_date = Date.today.to_s
-		journal = Journal.find(:created_at => today_date)
-		name = params[:journal][:name]
-		contents = params[:journal][:contents]
-		journal.ents.create(:name => name, :contents => contents)
-	end
+	def postEntry # POST /journals/{id}/entry JSON reqdata
+		@today_date = Date.today.to_s
+		@journal = Journal.find_or_create_by(:id => params[:id])
+		@name = params[:ent][:title]
+		@body = params[:ent][:body]
+		@log.debug("PostEntry : Body received: #{@body}")
+		@entry = @journal.ents.create(:title => @name, 
+								:body => @body, 
+								:journal_id => @journal.id)
 
-	def getAllJournals # GET /journals/all
-
-	end
-
-	def getJournal # GET /journals/ query 'id' or GET /journals query 'title'
-
+		respond_to do |format|
+    		msg = { :status => "ok", :message => @entry.id }
+    		format.json { render :json => msg }
+		end
 	end
 end

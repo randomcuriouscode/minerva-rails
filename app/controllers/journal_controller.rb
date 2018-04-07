@@ -1,22 +1,16 @@
 class JournalController < ActionController::Base
+	before_action :__init__
+
+	def __init__
+		@log = Logger.new($stderr)
+		@log.level = Logger::DEBUG   # or Logger::INFO
+	end
+
 
 	def createJournal # POST /journals/
 		@journal = Journal.create(:title => params[:journal][:title])
 	end
-
-	def postEntry # POST /journals/{id}/entry JSON reqdata
-		@today_date = Date.today.to_s
-		@journal = Journal.find(:created_at => today_date)
-		@name = params[:journal][:name]
-		@contents = params[:journal][:contents]
-		@entry = journal.ents.create(:name => @name, :contents => @contents)
-
-		respond_to do |format|
-    		msg = { :status => "ok", :message => @entry.id }
-    		format.json { render :json => msg }
-		end
-	end
-
+	
 	def getAllJournals # GET /journals/all
 		@journals = Journal.all
 
