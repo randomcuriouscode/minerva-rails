@@ -17,7 +17,7 @@ class EntController < ActionController::Base
 								:journal_id => @journal.id)
 
 		respond_to do |format|
-    		msg = { :status => "ok", :message => @entry.id }
+    		msg = @entry.id
     		format.json { render :json => msg }
 		end
 	end
@@ -27,7 +27,7 @@ class EntController < ActionController::Base
 		@entry.update_attributes(params.require(:ent).permit(:title, :body))
 
 		respond_to do |format|
-    		msg = { :status => "ok", :message => @entry.id }
+    		msg = @entry.id
     		format.json { render :json => msg }
 		end
 	end
@@ -37,7 +37,7 @@ class EntController < ActionController::Base
 		@entry = Ent.find(params[:id])
 
 		respond_to do |format|
-			msg = { :status => "ok", :message => @entry }
+			msg = @entry
 			format.json { render :json => msg }
 	 	end
 	end
@@ -47,7 +47,7 @@ class EntController < ActionController::Base
 					where(:journal_id => params[:journal_id])
 
 		respond_to do |format|
-			msg = { :status => "ok", :message => @entries }
+			msg = @entries
 			format.json { render :json => msg }
 	 	end
 	end

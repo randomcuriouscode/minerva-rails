@@ -18,7 +18,7 @@ class Home extends React.Component {
   onJournalClicked(e, id)
   {
     e.preventDefault()
-    console.log("Home received the journal click event!")
+    console.log("Home received the journal click event! id: " + id)
   }
 
   /*

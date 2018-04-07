@@ -1,5 +1,6 @@
 import React from 'react';
 import JournalEntries from './JournalEntries'
+import {getAllJournals, createJournal} from './server'
 
 class NewJournalForm extends React.Component {
   constructor(props) {
@@ -46,12 +47,37 @@ export default class Journals extends React.Component {
     super(props);
     this.state = {
       contents: [],
-      newJournal: false
-    };
+      newJournal: false,
+      journals: []
+    }; // TODO need to define handler in Home.js to show JournalEntries component
     this.handleJournalClick = props.onJournalClicked // send journal click event upstream to show entries
     this.onJournalSubmit = this.onJournalSubmit.bind(this)
     this.onNewJournalClick = this.onNewJournalClick.bind(this)
+    this.populateJournals = this.populateJournals.bind(this)
+
+    getAllJournals((res) => {
+      console.log(res)
+      this.setState({journals: res})
+    });
   }
+
+  populateJournals() {
+    var rows = [];
+    var journal = undefined;
+    for(let i = 0; i < this.state.journals.length; i ++){
+      journal = this.state.journals[i]
+      console.log(journal)
+      // force a deep copy from the state, avoiding closure weirdness
+      rows.push(<tr key={journal.id}> 
+                  <td><a href="javascript:void(0)" key="" onClick ={
+                    (e) => this.handleJournalClick(e, this.state.journals[i].id.valueOf())}>{journal.title}</a></td>
+                  <td>{journal.created_at}</td> 
+                  <td>{journal.updated_at}</td>
+                </tr>);
+    }
+    console.log(rows)
+    return rows;
+  } 
 
   onJournalSubmit(e, title) { // handle new journal submit from NewJournalForm
     e.preventDefault()
@@ -92,11 +118,7 @@ export default class Journals extends React.Component {
                 </thead>
 
                 <tbody data-link="row" className="rowlink">
-                  <tr>
-                    <td><a href="javascript:void(0)" key="" onClick ={(e) => this.handleJournalClick(e, 0)}>Tony's Secret Journal</a></td>
-                    <td>2018-02-22T01813481341</td>
-                    <td>Some time after</td>
-                  </tr>
+                  {this.populateJournals()}
                 </tbody>
               </table>
             </div>

@@ -11,7 +11,7 @@ class JournalController < ActionController::Base
 		@journal = Journal.create(:title => params[:journal][:title])
 
 		respond_to do |format|
-			msg = { :status => "ok", :message => @journal }
+			msg = @journal
 			format.json { render :json => msg }
 	 	end
 	end
@@ -20,7 +20,7 @@ class JournalController < ActionController::Base
 		@journals = Journal.all
 
 		respond_to do |format|
-			msg = { :status => "ok", :message => @journals }
+			msg = @journals
 			format.json { render :json => msg }
 	 	end
 	end
@@ -31,7 +31,7 @@ class JournalController < ActionController::Base
 						where('title like ?', "%#{query}%")
 
 		respond_to do |format|
-			msg = { :status => "ok", :message => @journals }
+			msg = @journals
 			format.json { render :json => msg }
 	 	end
 	end

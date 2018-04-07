@@ -10,7 +10,7 @@
 function sendXHR(verb, resource, body, cb) {
   var xhr = new XMLHttpRequest();
   xhr.open(verb, resource);
-  xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+  //xhr.setRequestHeader('Authorization', 'Bearer ' + token);
   // Response received from server. It could be a failure, though!
   xhr.addEventListener('load', function() {
     var statusCode = xhr.status;
