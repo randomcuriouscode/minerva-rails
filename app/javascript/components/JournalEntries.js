@@ -144,7 +144,6 @@ export default class JournalEntries extends React.Component {
   onEntryEditClicked(e, title, body){ // edit the current focus entry
     e.preventDefault();
 
-    // TODO validate that title is not empty
     if (title.trim().length === 0)
     {
       alert("Title is empty or only whitespace, please try again");
@@ -244,13 +243,17 @@ export default class JournalEntries extends React.Component {
       <div>
         <div className="body-container">
             <div className="panel panel-default">
-              <button type="button" className="btn btn-primary" onClick={(e) => this.onJournalCloseClick(e)}>
-                Close Journal
-              </button>
               <h3>Showing Journal: {this.state.journal_title}</h3>
-              <button type="button" className="btn btn-primary" onClick={(e) => this.onEntryCreateClick(e)}>
-                Create Entry for {this.state.journal_title}
-              </button>
+              <div className="col-xs-12">
+                <div className="btn-group" role="group" aria-label="">
+                  <button type="button" className="btn btn-primary" onClick={(e) => this.onEntryCreateClick(e)}>
+                    Create Entry for {this.state.journal_title}
+                  </button>
+                  <button type="button" className="btn btn-primary" onClick={(e) => this.onJournalCloseClick(e)}>
+                    <span aria-hidden="true">Close Journal</span>
+                  </button>
+                </div>
+              </div>
               <div className="table-wrapper panel panel-default">
                 <table className="table table-hover table-bordered table-scrollable">
                   <thead>
@@ -269,11 +272,17 @@ export default class JournalEntries extends React.Component {
               </div>
 
               {(this.state.show_entry_editor) ? 
+                <div>
+                <hr className="body-separator" />
                 <JournalEntryEditor onEntryEditClicked={this.onEntryEditClicked}
-                  entry_id={this.state.selected_entry} /> : ''}
+                  entry_id={this.state.selected_entry} /> 
+                </div>: ''}
 
               {(this.state.show_entry_creator) ? 
-                  <JournalEntryCreator onEntrySubmitClicked={this.onEntrySubmitClicked} /> : ''}
+                <div>
+                  <hr className="body-separator" />
+                  <JournalEntryCreator onEntrySubmitClicked={this.onEntrySubmitClicked} /> 
+                </div> : ''}
             </div>
           </div>
         </div>

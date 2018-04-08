@@ -14,8 +14,34 @@
  *= require_self
  */
 
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 0;
+}
+
+.navbar {
+	height: 25px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 0px;
+  height: 25px;
+  background-color: #000000;
+}
+
+footer p {
+  color: #FFFFFF;
+  margin-bottom:  0;
+}
+
 .table-wrapper{
-	max-height: 450px; 
+	max-height: 350px; 
 	width: 100%; 
 	margin: 0; 
 	overflow-y: auto;
@@ -26,9 +52,27 @@
 	padding: 0;
 }
 
+.body-separator{
+	height: 2px;
+	color: rgba(0, 100, 200, 0.5);
+	background-color:  rgba(0, 100, 200, 0.5);
+}
+
+.btn-primary{
+	border: 1px solid black;
+	border-radius:  3px;
+}
+
+.body-container{
+	padding-left: .5em;
+	padding-right: .5em;
+}
+
 .jumbotron{
 	padding-top: .5em;
 	margin-top: -.5em;
+	padding-bottom: .5em;
+	min-height: 100%;
 }
 
 .table-date-sep{

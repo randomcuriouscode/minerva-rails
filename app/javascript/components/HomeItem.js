@@ -17,10 +17,13 @@ export default class HomeItem extends React.Component {
   render() {
     return (
       <div>
-        <h1 className="display-2">Welcome to Minerva</h1>
-        <p className="lead">
-        Minerva is a Journaling Application written in Bootstrap+HTML+CSS+RubyOnRails+React.JS for Tyemill by Tony Gao
-        </p>
+        <div className="body-container">
+          <h1 className="display-2">Welcome to Minerva</h1>
+          <p className="lead">
+          Minerva is a Journaling Application written in Bootstrap+HTML+CSS+RubyOnRails+React.JS for Tyemill by Tony Gao
+          </p>
+          <hr className="body-separator" />
+        </div>
         <div className="body-container">
           <div className="col-md-2">
           </div>
