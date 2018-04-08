@@ -184,12 +184,23 @@ export default class JournalEntries extends React.Component {
   populateEntries() {
     var rows = [];
     var entry = undefined;
+    var last_date = '';
     for(let i = 0; i < this.state.entries.length; i ++){
       entry = this.state.entries[i]
+      let cur_date = entry.created_at.split('T')[0]
       let body = entry.body
       if (body.length > 30) // truncate body if too long
       {
         body = body.substring(0, 30);
+      }
+      if (cur_date != last_date)
+      { // just push a row to delimit items with different dates, since entries is already sorted.
+        rows.push(<tr key={entry.id + 'delimiter'} className="table-date-sep"> 
+                  <td>Entries for {cur_date}</td>
+                  <td></td>
+                  <td></td> 
+                  <td></td>
+                </tr>);
       }
       // force a deep copy from the state with valueOf(), avoiding closure weirdness
       rows.push(<tr key={entry.id}> 
@@ -200,8 +211,10 @@ export default class JournalEntries extends React.Component {
                   <td>{entry.created_at}</td> 
                   <td>{entry.updated_at === entry.created_at ? 'Not Modified' : 'Modified'}</td>
                 </tr>);
+      last_date = cur_date;
     }
     console.log('populateEntries: populating ' + rows.length + ' rows');
+
     return rows;
   } 
 
