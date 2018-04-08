@@ -40,7 +40,7 @@ This application requires:
 
 - Ruby 2.4.1
 - Rails 5.1.6
-- Node.js 7.1.2 for react rendering and webpack
+- Node.js 7.2.0 for react rendering and webpack
 
 Getting Started
 ---------------
