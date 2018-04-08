@@ -50,6 +50,7 @@ $ rails webpacker:install:react
 ```
 
 [You may also require yarn for Node](https://yarnpkg.com/lang/en/docs/install/)
+
 If `React-Rails` gives an error related to Yarn packages, Yarn packages may need updating:
 
 ```
