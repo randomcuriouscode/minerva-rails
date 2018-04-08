@@ -47,7 +47,7 @@ export default class Journals extends React.Component {
     super(props);
     this.state = {
       contents: [],
-      newJournal: false,
+      newJournal: false, // allow for dynamic swapping of journal creation form
       journals: []
     }; // TODO need to define handler in Home.js to show JournalEntries component
     this.handleJournalClick = props.onJournalClicked // send journal click event upstream to show entries
@@ -62,12 +62,15 @@ export default class Journals extends React.Component {
     });
   }
 
+  /*
+    Populate journals by all journals for now.
+    TODO: look into how to populate without re-rendering the entire table
+  */
   populateJournals() {
     var rows = [];
     var journal = undefined;
     for(let i = 0; i < this.state.journals.length; i ++){
       journal = this.state.journals[i]
-      console.log(journal)
       // force a deep copy from the state, avoiding closure weirdness
       rows.push(<tr key={journal.id}> 
                   <td><a href="javascript:void(0)" key="" onClick ={
@@ -76,13 +79,13 @@ export default class Journals extends React.Component {
                   <td>{journal.updated_at}</td>
                 </tr>);
     }
-    console.log(rows)
+    console.log('populateJournals: populating ' + rows.length + ' rows');
     return rows;
   } 
 
   appendJournalState(newEntry)
   {
-    var newState = this.state.journals.concat([newEntry]);
+    var newState = this.state.journals.concat([newEntry]); 
     this.setState({journals: newState});
   }
 
@@ -90,7 +93,7 @@ export default class Journals extends React.Component {
     e.preventDefault()
     this.setState({newJournal: false})
     console.log("onJournalSubmit: Got a journal!" + title) 
-    // TODO contact backend, write journal, render new entry in journal table
+    // contact backend, write journal, render new entry in journal table
 
     createJournal(title, (res) => {
       console.log('onJournalSubmit: Journal created: ' + JSON.stringify(res))
@@ -119,8 +122,8 @@ export default class Journals extends React.Component {
           {(this.state.newJournal) ? 
             <NewJournalForm onJournalSubmit={this.onJournalSubmit}/> : ''}
           <div className="col-md-8 text-center">
-            <div className="panel panel-default">
-              <table className="table table-hover table-bordered">
+            <div className="table-wrapper panel panel-default">
+              <table className="table table-hover table-bordered table-scrollable">
                 <thead>
                     <tr>
                         <th>Journal Title</th>

@@ -1,8 +1,9 @@
 <head>
 	<title>Hello world</title>
+	<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
 	<%= javascript_pack_tag 'application' %>
 </head>
 <div class="jumbotron">
   
-  <%= react_component('Home', name: 'John') %>
+  <%= react_component('Home') %>
 </div>
