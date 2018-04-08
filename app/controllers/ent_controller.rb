@@ -42,6 +42,7 @@ class EntController < ActionController::Base
 	 	end
 	end
 
+	## Always returns entries in descending creation time order.
 	def getEntries # Get /entries/:journal_id
 		query = params[:journal_id]
 		@log.debug("getEntries: Query " + query)
