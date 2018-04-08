@@ -14,7 +14,7 @@ The primary features supported are:
 - Creation of new journal entries under a particular journal
 - Editing journal entries
 
-Features for future consideration:
+Future consideration:
 
 - Error handling for badly formed requests on the back end
 	- currently just returns the default rails 500 interal server error.
