@@ -1,6 +1,5 @@
 import React from 'react';
 import HomeItem from './HomeItem'
-import HelloWorld from './HelloWorld'
 import Journals from './Journals'
 
 /*
