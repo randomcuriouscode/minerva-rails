@@ -182,7 +182,7 @@ export default class Journals extends React.Component {
             <label htmlFor="tb_journalSearch">Search Journal by Title</label>
             <input type="text" className="form-control" id="tb_journalSearch" aria-describedby="journalSearchHelp" 
             onChange={this.handleJournalQueryChange} onKeyPress={this.handleSearchEnterKey} placeholder="Enter Title Query" />
-            <small id="journalSearchHelp" className="form-text text-muted">Search by partial match, empty will output all journals. Orders in descending date of creation</small>
+            <small id="journalSearchHelp" className="form-text text-muted">Search by partial title, empty title will output all journals. Output in descending date of creation.</small>
           </div>
           <div className="btn-group" role="group" aria-label="">
             <button type="submit" className="btn btn-primary" 
