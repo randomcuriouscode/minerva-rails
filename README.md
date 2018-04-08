@@ -30,6 +30,8 @@ Future consideration:
 
 Design
 -------------
+![alt text](https://github.com/rpg711/minerva-rails/blob/master/documentation/high_level_design.png)
+![alt text](https://github.com/rpg711/minerva-rails/blob/master/documentation/component_design.png)
 
 Dependencies
 -------------
