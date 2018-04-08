@@ -76,13 +76,13 @@ export function getAllJournals(cb){
 }
 
 export function searchJournals(query, cb){
-  sendXHR('GET', '/journals/search', {'title' : query}, (xhr) => {
+  sendXHR('POST', '/journals/search', {'title' : query}, (xhr) => {
       cb(JSON.parse(xhr.responseText));
     });
 }
 
 export function postEntry(journal_id, title, body, cb){
-  sendXHR('GET', '/journals/' + journal_id + '/entry', 
+  sendXHR('POST', '/journals/' + journal_id + '/entry', 
         {'title' : title, 'body' : body}, (xhr) => {
         cb(JSON.parse(xhr.responseText));
   });

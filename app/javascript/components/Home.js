@@ -12,14 +12,9 @@ class Home extends React.Component {
     this.state = {
       contents: []
     };
-    this.onJournalClicked = this.onJournalClicked.bind(this)
   }
 
-  onJournalClicked(e, id)
-  {
-    e.preventDefault()
-    console.log("Home received the journal click event! id: " + id)
-  }
+ 
 
   /*
     Refresh should be called after a client event is handled by the server if
@@ -35,7 +30,7 @@ class Home extends React.Component {
     return (
       <div>
         <HomeItem />
-        <Journals onJournalClicked={this.onJournalClicked}/>
+        <Journals/>
       </div>
       );
   }

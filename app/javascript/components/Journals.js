@@ -1,6 +1,6 @@
 import React from 'react';
 import JournalEntries from './JournalEntries'
-import {getAllJournals, createJournal} from './server'
+import {getAllJournals, createJournal, searchJournals} from './server'
 
 class NewJournalForm extends React.Component {
   constructor(props) {
@@ -21,6 +21,7 @@ class NewJournalForm extends React.Component {
   }
 
   handleJournalTitleChange (e) {
+    e.preventDefault();
     this.setState({journal_title: e.target.value})
     console.log(this.state.journal_title)
   }
@@ -40,7 +41,7 @@ class NewJournalForm extends React.Component {
 }
 
 /*
-  Journals handles everything related to a journal itself
+  Journals handles everything related to a journal and logic for showing journal entries
 */
 export default class Journals extends React.Component {
   constructor(props) {
@@ -48,13 +49,19 @@ export default class Journals extends React.Component {
     this.state = {
       contents: [],
       newJournal: false, // allow for dynamic swapping of journal creation form
-      journals: []
-    }; // TODO need to define handler in Home.js to show JournalEntries component
-    this.handleJournalClick = props.onJournalClicked // send journal click event upstream to show entries
+      journals: [], // cache of journals
+      journal_query: '', // search query for journal
+      showJournalEntries: false, // whether or not to show the entries of a journal
+      selectedJournal: -1 // the current selected journal
+    }; 
     this.onJournalSubmit = this.onJournalSubmit.bind(this)
     this.onNewJournalClick = this.onNewJournalClick.bind(this)
     this.populateJournals = this.populateJournals.bind(this)
     this.appendJournalState = this.appendJournalState.bind(this)
+    this.handleJournalQueryChange = this.handleJournalQueryChange.bind(this)
+    this.onJournalSearchSubmit = this.onJournalSearchSubmit.bind(this)
+    this.onJournalClicked = this.onJournalClicked.bind(this)
+    this.onJournalCloseClick = this.onJournalCloseClick.bind(this)
 
     getAllJournals((res) => {
       console.log(res)
@@ -64,17 +71,18 @@ export default class Journals extends React.Component {
 
   /*
     Populate journals by all journals for now.
-    TODO: look into how to populate without re-rendering the entire table
+    TODO: look into how to populate without re-rendering the entire table, possibly
+          converting each table entry into a React PureComponent
   */
   populateJournals() {
     var rows = [];
     var journal = undefined;
     for(let i = 0; i < this.state.journals.length; i ++){
       journal = this.state.journals[i]
-      // force a deep copy from the state, avoiding closure weirdness
+      // force a deep copy from the state with valueOf(), avoiding closure weirdness
       rows.push(<tr key={journal.id}> 
                   <td><a href="javascript:void(0)" key="" onClick ={
-                    (e) => this.handleJournalClick(e, this.state.journals[i].id.valueOf())}>{journal.title}</a></td>
+                    (e) => this.onJournalClicked(e, this.state.journals[i].id.valueOf())}>{journal.title}</a></td>
                   <td>{journal.created_at}</td> 
                   <td>{journal.updated_at}</td>
                 </tr>);
@@ -103,8 +111,45 @@ export default class Journals extends React.Component {
 
   onNewJournalClick(e) { // show the new journal form on btn click
     e.preventDefault()
-    this.setState({newJournal: true})
+    if (!this.state.newJournal)
+      this.setState({newJournal: true})
+    else
+      this.setState({newJournal: false})
   }
+
+  handleJournalQueryChange(e){
+    e.preventDefault()
+    this.setState({journal_query: e.target.value})
+    console.log('Journal query : ' + this.state.journal_query)
+  }
+
+  onJournalSearchSubmit(e, query){
+    e.preventDefault()
+    searchJournals(query, (res) => {
+      this.setState({journals: res})
+    });
+  }
+
+  onJournalCloseClick(e)
+  {
+    e.preventDefault()
+    this.setState({selectedJournal: -1, showJournalEntries: false})
+  }
+
+  onJournalClicked(e, id)
+  {
+    e.preventDefault()
+    console.log("onJournalClicked::rendering journal id: " + id)
+
+    // render the JournalEntries component, it can do the heavy lifting related to entries
+    this.setState({selectedJournal: id, showJournalEntries: true}, () =>{
+      this.scrollToBottom()
+    });
+  }
+
+scrollToBottom() {
+  this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+}
 
   refresh() {}
 
@@ -116,29 +161,38 @@ export default class Journals extends React.Component {
     return (
       <div>
         <div className="body-container">
-          <div className="col-md-2">
+          <form>
+            <div className="form-group">
+              <label htmlFor="tb_journalSearch">Search Journal by Title</label>
+              <input type="text" className="form-control" id="tb_journalSearch" aria-describedby="journalSearchHelp" onChange={this.handleJournalQueryChange} placeholder="Enter Title Query" />
+              <small id="journalSearchHelp" className="form-text text-muted">Search by partial match, empty will output all journals. Orders in descending date of creation</small>
+            </div>
+            <button type="submit" className="btn btn-primary" onClick={(e) => this.onJournalSearchSubmit(e, this.state.journal_query)}>Search</button>
+          </form>
           <button type="button" className="btn btn-primary" onClick={(e) => this.onNewJournalClick(e)}>New Journal</button>
-          </div>
           {(this.state.newJournal) ? 
             <NewJournalForm onJournalSubmit={this.onJournalSubmit}/> : ''}
-          <div className="col-md-8 text-center">
-            <div className="table-wrapper panel panel-default">
-              <table className="table table-hover table-bordered table-scrollable">
-                <thead>
-                    <tr>
-                        <th>Journal Title</th>
-                        <th>Created</th>
-                        <th>Modified</th>
-                    </tr>
-                </thead>
+          <div className="table-wrapper panel panel-default">
+            <table className="table table-hover table-bordered table-scrollable">
+              <thead>
+                  <tr>
+                      <th>Journal Title</th>
+                      <th>Created</th>
+                      <th>Modified</th>
+                  </tr>
+              </thead>
 
-                <tbody data-link="row" className="rowlink">
-                  {this.populateJournals()}
-                </tbody>
-              </table>
-            </div>
+              <tbody data-link="row" className="rowlink">
+                {this.populateJournals()}
+              </tbody>
+            </table>
           </div>
-          <div className="col-md-2">
+            {(this.state.showJournalEntries) ?
+              <JournalEntries journal_id={this.state.selectedJournal} onJournalCloseClick={this.onJournalCloseClick} /> : ''}
+        
+
+          <div style={{ float:"left", clear: "both" }}
+               ref={(el) => { this.messagesEnd = el; }}>
           </div>
         </div>
       </div>
