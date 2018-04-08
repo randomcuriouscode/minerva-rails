@@ -198,6 +198,8 @@ export default class Journals extends React.Component {
           {(this.state.newJournal) ? 
             <NewJournalForm onJournalSubmit={this.onJournalSubmit}/> : ''}
 
+          <hr className="body-separator" />
+
           <div className="table-wrapper panel panel-default">
             <table className="table table-hover table-bordered table-scrollable">
               <thead>
@@ -214,11 +216,16 @@ export default class Journals extends React.Component {
             </table>
           </div>
 
+
+
           {(this.state.showJournalEntries) ?
+            <div>
+            <hr className = "body-separator" />
             <JournalEntries journal_id={this.state.selectedJournal} 
                 journal_title={this.state.selectedJournal_Title}
                 onJournalCloseClick={this.onJournalCloseClick} 
-                scrollToBottom={this.scrollToBottom}/> : ''}
+                scrollToBottom={this.scrollToBottom}/>
+            </div> : ''}
         
           <div style={{ float:"left", clear: "both" }} // this should always be at bottom
                ref={(el) => { this.messagesEnd = el; }}>
