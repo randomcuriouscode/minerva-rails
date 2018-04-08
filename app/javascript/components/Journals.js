@@ -7,7 +7,7 @@ class NewJournalForm extends React.Component {
     super(props);
     this.state = {
       contents: [],
-      journal_title: ""
+      journal_title: ''
     };
 
     this.onJournalSubmit = props.onJournalSubmit
@@ -32,7 +32,7 @@ class NewJournalForm extends React.Component {
         <div className="form-group">
           <label htmlFor="tb_journal">Journal Title</label>
           <input type="text" className="form-control" id="tb_journal" aria-describedby="journalHelp" onChange={this.handleJournalTitleChange} placeholder="Enter Journal Title" />
-          <small id="journalHelp" className="form-text text-muted">Journal Title can be anything!</small>
+          <small id="journalHelp" className="form-text text-muted">Journal Title must not be empty or only whitespace</small>
         </div>
         <button type="submit" className="btn btn-primary" onClick={(e) => this.onJournalSubmit(e, this.state.journal_title)}>Submit</button>
       </form>
@@ -100,8 +100,14 @@ export default class Journals extends React.Component {
     this.setState({journals: newState});
   }
 
-  onJournalSubmit(e, title) { // handle new journal submit from NewJournalForm
+  onJournalSubmit(e, title) { // handle creating a new journal from NewJournalForm
     e.preventDefault()
+    if (title.trim().length === 0) // basic validation for invalid input
+    {
+      alert("Journal title cannot be empty, please try again.");
+      return;
+    }
+
     this.setState({newJournal: false})
     console.log("onJournalSubmit: Got a journal!" + title) 
     // contact backend, write journal, render new entry in journal table
@@ -172,9 +178,13 @@ scrollToBottom() {
             </div>
             <button type="submit" className="btn btn-primary" onClick={(e) => this.onJournalSearchSubmit(e, this.state.journal_query)}>Search</button>
           </form>
-          <button type="button" className="btn btn-primary" onClick={(e) => this.onNewJournalClick(e)}>New Journal</button>
+          <button type="button" className="btn btn-primary" onClick={(e) => this.onNewJournalClick(e)}>
+            {(this.state.newJournal) ? "Cancel Creating Journal" : "New Journal"}
+            </button>
+          
           {(this.state.newJournal) ? 
             <NewJournalForm onJournalSubmit={this.onJournalSubmit}/> : ''}
+
           <div className="table-wrapper panel panel-default">
             <table className="table table-hover table-bordered table-scrollable">
               <thead>
@@ -190,14 +200,14 @@ scrollToBottom() {
               </tbody>
             </table>
           </div>
-            {(this.state.showJournalEntries) ?
-              <JournalEntries journal_id={this.state.selectedJournal} 
-                  journal_title={this.state.selectedJournal_Title}
-                  onJournalCloseClick={this.onJournalCloseClick} 
-                  scrollToBottom={this.scrollToBottom}/> : ''}
-        
 
-          <div style={{ float:"left", clear: "both" }}
+          {(this.state.showJournalEntries) ?
+            <JournalEntries journal_id={this.state.selectedJournal} 
+                journal_title={this.state.selectedJournal_Title}
+                onJournalCloseClick={this.onJournalCloseClick} 
+                scrollToBottom={this.scrollToBottom}/> : ''}
+        
+          <div style={{ float:"left", clear: "both" }} // this should always be at bottom
                ref={(el) => { this.messagesEnd = el; }}>
           </div>
         </div>

@@ -43,7 +43,7 @@ class JournalEntryEditor extends React.Component {
           <label htmlFor="tb_entryName">Entry Title</label>
           <input type="text" className="form-control" id="tb_entryName" aria-describedby="entryHelp" 
           onChange={this.handleEntryTitleChange} value={this.state.entry_title} />
-          <small id="entryHelp" className="form-text text-muted">Entry Title must not be empty</small>
+          <small id="entryHelp" className="form-text text-muted">Entry Title must not be empty or only whitespace</small>
           <label htmlFor="tb_entryContents">Entry Contents</label>
           <textarea className="form-control" id="tb_entryContents" 
               rows="3" value={this.state.entry_body} onChange={this.handleEntryBodyChange}/>
@@ -98,7 +98,7 @@ class JournalEntryCreator extends React.Component {
           <label htmlFor="tb_entryName">Entry Title</label>
           <input type="text" className="form-control" id="tb_entryName" aria-describedby="entryHelp" 
           onChange={this.handleEntryTitleChange} value={this.state.entry_title} />
-          <small id="entryHelp" className="form-text text-muted">Entry Title must not be empty</small>
+          <small id="entryHelp" className="form-text text-muted">Entry Title must not be empty or only whitespace</small>
           <label htmlFor="tb_entryContents">Entry Contents</label>
           <textarea className="form-control" id="tb_entryContents" 
               rows="3" value={this.state.entry_body} onChange={this.handleEntryBodyChange}/>
@@ -145,6 +145,11 @@ export default class JournalEntries extends React.Component {
     e.preventDefault();
 
     // TODO validate that title is not empty
+    if (title.trim().length === 0)
+    {
+      alert("Title is empty or only whitespace, please try again");
+      return;
+    }
 
     updateEntry(this.state.selected_entry, title, body, (res) => { 
         // TODO: change this to swap just the changed entry
@@ -173,6 +178,12 @@ export default class JournalEntries extends React.Component {
   onEntrySubmitClicked(e, entry_title, entry_body){ // create a new entry when submit is called
     e.preventDefault()
 
+    if (entry_title.trim().length === 0)
+    {
+      alert("Title is empty or only whitespace, please try again");
+      return;
+    }
+
     postEntry(this.state.journal_id, entry_title, entry_body, (res) =>
     {
       this.setState({show_entry_creator: false}, ()=>{
@@ -187,7 +198,7 @@ export default class JournalEntries extends React.Component {
     var last_date = '';
     for(let i = 0; i < this.state.entries.length; i ++){
       entry = this.state.entries[i]
-      let cur_date = entry.created_at.split('T')[0]
+      let cur_date = entry.created_at.split('T')[0] // db always tags a date
       let body = entry.body
       if (body.length > 30) // truncate body if too long
       {
