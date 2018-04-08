@@ -3,6 +3,10 @@ Minerva Rails
 
 Minerva is a Ruby on Rails + Bootstrap + CSS + React.JS journaling application
 
+The purpose of this application is to focus on the core journaling functionality 
+related to creating a journal, editing the contents of journal entries, and 
+creating journal entries.
+
 The primary features supported are:
 
 - Creation of journals with a title
@@ -22,10 +26,10 @@ Future consideration:
 - More search options: different query ids, complex queries, whole string match
 - User-Defined column ordering on journal entry listview
 - More CSS for pretty UI
+- Some reorganizing of the HTML elements, grouping of buttons for more intuitive UI.
 
 
-
-Ruby on Rails
+Dependencies
 -------------
 
 This application requires:
@@ -82,7 +86,7 @@ $ rake db:reset
 
 Issues
 -------------
-1. If the database is modified from an external source (ex. a second client), the page must be reloaded, there is no polling for new data.
+1. If the database is modified from an external source (ex. a second client), the page must be reloaded, there is no polling for database state.
 
 Credits
 -------
