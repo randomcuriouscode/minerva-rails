@@ -201,12 +201,12 @@ export default class JournalEntries extends React.Component {
       let body = entry.body
       if (body.length > 30) // truncate body if too long
       {
-        body = body.substring(0, 30);
+        body = body.substring(0, 30) + '...';
       }
       if (cur_date != last_date)
       { // just push a row to delimit items with different dates, since entries is already sorted.
         rows.push(<tr key={entry.id + 'delimiter'} className="table-date-sep"> 
-                  <td>Entries for {cur_date}</td>
+                  <td>Entries created on {cur_date}</td>
                   <td></td>
                   <td></td> 
                   <td></td>
