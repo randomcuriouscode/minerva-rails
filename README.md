@@ -28,6 +28,8 @@ Future consideration:
 - More CSS for pretty UI
 - Some reorganizing of the HTML elements, grouping of buttons for more intuitive UI.
 
+Design
+-------------
 
 Dependencies
 -------------
