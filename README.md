@@ -104,3 +104,4 @@ provided by the [RailsApps Project](http://railsapps.github.io/).
 
 License
 -------
+GPL
