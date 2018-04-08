@@ -16,12 +16,12 @@ The primary features supported are:
 
 Features for future consideration:
 
-- Error handling for badly formed requests
+- Error handling for badly formed requests on the back end
+	- currently just returns the default rails 500 interal server error.
 - Unit tests using `factory_girl_rails` and `faker` for random data
 - More search options: different query ids, complex queries, whole string match
-- Column ordering on journal entry listview
+- User-Defined column ordering on journal entry listview
 - More CSS for pretty UI
-- TBD
 
 
 Ruby on Rails
@@ -35,6 +35,12 @@ This application requires:
 
 Getting Started
 ---------------
+Installing rails dependencies:
+
+```
+$ bundle install
+```
+
 
 To setup `React-Rails`, execute:
 
@@ -44,8 +50,11 @@ $ rails webpacker:install:react
 ```
 
 [You may also require yarn for Node](https://yarnpkg.com/lang/en/docs/install/)
+If `React-Rails` gives an error related to Yarn packages, Yarn packages may need updating:
 
-
+```
+$ yarn install
+```
 
 If issues are encountered with the `responders` gem, execute:
 
@@ -54,8 +63,29 @@ $ bundle install
 $ rails g responders:install
 ```
 
-Documentation and Support
+Running
+-------
+If this is the first run, the database needs to be created and populated with records:
+
+```
+$ rake db:create
+$ rake db:migrate
+```
+
+To run the server:
+
+```
+$ rails s
+```
+
+The webpage is located at `http://localhost:3000/`
+
+Resetting database
 -------------------------
+
+```
+$ rake db:reset
+```
 
 Issues
 -------------
