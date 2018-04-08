@@ -24,6 +24,7 @@ Future consideration:
 - More CSS for pretty UI
 
 
+
 Ruby on Rails
 -------------
 
@@ -35,32 +36,23 @@ This application requires:
 
 Getting Started
 ---------------
-Installing rails dependencies:
+1. [Install yarn](https://yarnpkg.com/lang/en/docs/install/)
 
-```
-$ bundle install
-```
-
-
-To setup `React-Rails`, execute:
-
-```
-$ rails webpacker:install
-$ rails webpacker:install:react
-```
-
-[You may also require yarn for Node](https://yarnpkg.com/lang/en/docs/install/)
-
-If `React-Rails` gives an error related to Yarn packages, Yarn packages may need updating:
+2. Update yarn packages:
 
 ```
 $ yarn install
 ```
 
-If issues are encountered with the `responders` gem, execute:
+3. Installing rails dependencies:
 
 ```
 $ bundle install
+```
+
+4. If issues are encountered with the `responders` gem, execute:
+
+```
 $ rails g responders:install
 ```
 
@@ -91,12 +83,6 @@ $ rake db:reset
 Issues
 -------------
 1. If the database is modified from an external source (ex. a second client), the page must be reloaded, there is no polling for new data.
-
-Similar Projects
-----------------
-
-Contributing
-------------
 
 Credits
 -------
