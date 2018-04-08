@@ -43,6 +43,8 @@ class EntController < ActionController::Base
 	end
 
 	def getEntries # Get /entries/:journal_id
+		query = params[:journal_id]
+		@log.debug("getEntries: Query " + query)
 		@entries = Ent.order(:created_at => :desc).
 					where(:journal_id => params[:journal_id])
 

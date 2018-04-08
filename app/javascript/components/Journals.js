@@ -52,7 +52,8 @@ export default class Journals extends React.Component {
       journals: [], // cache of journals
       journal_query: '', // search query for journal
       showJournalEntries: false, // whether or not to show the entries of a journal
-      selectedJournal: -1 // the current selected journal
+      selectedJournal: -1, // the current selected journal
+      selectedJournal_Title: ''
     }; 
     this.onJournalSubmit = this.onJournalSubmit.bind(this)
     this.onNewJournalClick = this.onNewJournalClick.bind(this)
@@ -62,6 +63,7 @@ export default class Journals extends React.Component {
     this.onJournalSearchSubmit = this.onJournalSearchSubmit.bind(this)
     this.onJournalClicked = this.onJournalClicked.bind(this)
     this.onJournalCloseClick = this.onJournalCloseClick.bind(this)
+    this.scrollToBottom = this.scrollToBottom.bind(this)
 
     getAllJournals((res) => {
       console.log(res)
@@ -82,10 +84,11 @@ export default class Journals extends React.Component {
       // force a deep copy from the state with valueOf(), avoiding closure weirdness
       rows.push(<tr key={journal.id}> 
                   <td><a href="javascript:void(0)" key="" onClick ={
-                    (e) => this.onJournalClicked(e, this.state.journals[i].id.valueOf())}>{journal.title}</a></td>
+                    (e) => this.setState({showJournalEntries: false},
+                          ()=> this.onJournalClicked(e, this.state.journals[i].title.valueOf(), this.state.journals[i].id.valueOf()))}>{journal.title}</a></td>
                   <td>{journal.created_at}</td> 
                   <td>{journal.updated_at}</td>
-                </tr>);
+                </tr>); // TODO set state is a hack to swap entry while there is currently an entry displayed
     }
     console.log('populateJournals: populating ' + rows.length + ' rows');
     return rows;
@@ -133,16 +136,16 @@ export default class Journals extends React.Component {
   onJournalCloseClick(e)
   {
     e.preventDefault()
-    this.setState({selectedJournal: -1, showJournalEntries: false})
+    this.setState({selectedJournal: -1, selectedJournal_Title: '', showJournalEntries: false})
   }
 
-  onJournalClicked(e, id)
+  onJournalClicked(e, title, id)
   {
     e.preventDefault()
     console.log("onJournalClicked::rendering journal id: " + id)
 
     // render the JournalEntries component, it can do the heavy lifting related to entries
-    this.setState({selectedJournal: id, showJournalEntries: true}, () =>{
+    this.setState({selectedJournal: id, selectedJournal_Title: title, showJournalEntries: true}, () =>{
       this.scrollToBottom()
     });
   }
@@ -188,7 +191,10 @@ scrollToBottom() {
             </table>
           </div>
             {(this.state.showJournalEntries) ?
-              <JournalEntries journal_id={this.state.selectedJournal} onJournalCloseClick={this.onJournalCloseClick} /> : ''}
+              <JournalEntries journal_id={this.state.selectedJournal} 
+                  journal_title={this.state.selectedJournal_Title}
+                  onJournalCloseClick={this.onJournalCloseClick} 
+                  scrollToBottom={this.scrollToBottom}/> : ''}
         
 
           <div style={{ float:"left", clear: "both" }}
