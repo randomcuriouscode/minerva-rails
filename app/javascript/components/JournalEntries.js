@@ -245,12 +245,14 @@ export default class JournalEntries extends React.Component {
             <div className="panel panel-default">
               <h3>Showing Journal: {this.state.journal_title}</h3>
               <div className="col-xs-12">
-                <button type="button" className="btn btn-primary" onClick={(e) => this.onEntryCreateClick(e)}>
-                  Create Entry for {this.state.journal_title}
-                </button>
-                <button type="button" className="btn btn-primary pull-right" onClick={(e) => this.onJournalCloseClick(e)}>
-                  <span aria-hidden="true">Close Journal</span>
-                </button>
+                <div className="btn-group" role="group" aria-label="">
+                  <button type="button" className="btn btn-primary" onClick={(e) => this.onEntryCreateClick(e)}>
+                    Create Entry for {this.state.journal_title}
+                  </button>
+                  <button type="button" className="btn btn-primary" onClick={(e) => this.onJournalCloseClick(e)}>
+                    <span aria-hidden="true">Close Journal</span>
+                  </button>
+                </div>
               </div>
               <div className="table-wrapper panel panel-default">
                 <table className="table table-hover table-bordered table-scrollable">
