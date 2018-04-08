@@ -53,7 +53,7 @@ export default class Journals extends React.Component {
       journal_query: '', // search query for journal
       showJournalEntries: false, // whether or not to show the entries of a journal
       selectedJournal: -1, // the current selected journal
-      selectedJournal_Title: ''
+      selectedJournal_Title: '' // title of the current selected journal
     }; 
     this.onJournalSubmit = this.onJournalSubmit.bind(this)
     this.onNewJournalClick = this.onNewJournalClick.bind(this)
@@ -64,6 +64,7 @@ export default class Journals extends React.Component {
     this.onJournalClicked = this.onJournalClicked.bind(this)
     this.onJournalCloseClick = this.onJournalCloseClick.bind(this)
     this.scrollToBottom = this.scrollToBottom.bind(this)
+    this.handleSearchEnterKey = this.handleSearchEnterKey.bind(this)
 
     getAllJournals((res) => {
       console.log(res)
@@ -128,8 +129,8 @@ export default class Journals extends React.Component {
 
   handleJournalQueryChange(e){
     e.preventDefault()
-    this.setState({journal_query: e.target.value})
-    console.log('Journal query : ' + this.state.journal_query)
+    this.setState({journal_query: e.target.value}, () => console.debug('Journal query : ' + this.state.journal_query))
+    
   }
 
   onJournalSearchSubmit(e, query){
@@ -156,9 +157,9 @@ export default class Journals extends React.Component {
     });
   }
 
-scrollToBottom() {
-  this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-}
+  scrollToBottom() {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
 
   refresh() {}
 
@@ -166,21 +167,33 @@ scrollToBottom() {
     this.refresh();
   }
 
+  handleSearchEnterKey(e) {
+    if (e.key === 'Enter') {
+      console.debug('got enter key press');
+      this.onJournalSearchSubmit(e, this.state.journal_query);
+    }
+  }
+
   render() {
     return (
       <div>
         <div className="body-container">
-          <form>
-            <div className="form-group">
-              <label htmlFor="tb_journalSearch">Search Journal by Title</label>
-              <input type="text" className="form-control" id="tb_journalSearch" aria-describedby="journalSearchHelp" onChange={this.handleJournalQueryChange} placeholder="Enter Title Query" />
-              <small id="journalSearchHelp" className="form-text text-muted">Search by partial match, empty will output all journals. Orders in descending date of creation</small>
-            </div>
-            <button type="submit" className="btn btn-primary" onClick={(e) => this.onJournalSearchSubmit(e, this.state.journal_query)}>Search</button>
-          </form>
-          <button type="button" className="btn btn-primary" onClick={(e) => this.onNewJournalClick(e)}>
-            {(this.state.newJournal) ? "Cancel Creating Journal" : "New Journal"}
+          <div className="form-group">
+            <label htmlFor="tb_journalSearch">Search Journal by Title</label>
+            <input type="text" className="form-control" id="tb_journalSearch" aria-describedby="journalSearchHelp" 
+            onChange={this.handleJournalQueryChange} onKeyPress={this.handleSearchEnterKey} placeholder="Enter Title Query" />
+            <small id="journalSearchHelp" className="form-text text-muted">Search by partial match, empty will output all journals. Orders in descending date of creation</small>
+          </div>
+          <div className="btn-group" role="group" aria-label="">
+            <button type="submit" className="btn btn-primary" 
+                onClick={(e) => this.onJournalSearchSubmit(e, this.state.journal_query)}>
+              Search
             </button>
+            <button type="button" className="btn btn-primary" 
+                onClick={(e) => this.onNewJournalClick(e)}>
+              {(this.state.newJournal) ? "Cancel Creating Journal" : "New Journal"}
+            </button>
+          </div>
           
           {(this.state.newJournal) ? 
             <NewJournalForm onJournalSubmit={this.onJournalSubmit}/> : ''}
