@@ -1,24 +1,9 @@
-<div class="jumbotron">
-  <h1 class="display-2">Welcome</h1>
-  <p class="lead">
-    This web application was created with
-    <%= link_to('Rails Composer', 'http://railsapps.github.io/rails-composer/') %>
-    from the <%= link_to('RailsApps project', 'http://railsapps.github.io/') %>.
-  </p>
-
-  <div class="container">
-  	<div class="row">
-  		<div class="col-4-md">
-  			<button type="button" class="btn btn-primary">Test</button>
-  		</div>
-  		<div class="col-8-md">
-			<div class="list-group">
-  			<a href="#" class="list-group-item">London</a> 
-			<a href="#" class="list-group-item">Paris</a>
-			<a href="#" class="list-group-item">Moscow</a>
-			<a href="#" class="list-group-item">NY</a>
-			</div>
-  		</div>
-	</div>
-  </div>
+<head>
+	<title>Minerva</title>
+	<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
+	<%= javascript_pack_tag 'application' %>
+</head>
+<div class="jumbotron jumbotron-fluid">
+  
+  <%= react_component('Home') %>
 </div>

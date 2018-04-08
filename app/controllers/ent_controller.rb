@@ -17,7 +17,7 @@ class EntController < ActionController::Base
 								:journal_id => @journal.id)
 
 		respond_to do |format|
-    		msg = { :status => "ok", :message => @entry.id }
+    		msg = @entry.id
     		format.json { render :json => msg }
 		end
 	end
@@ -27,22 +27,9 @@ class EntController < ActionController::Base
 		@entry.update_attributes(params.require(:ent).permit(:title, :body))
 
 		respond_to do |format|
-    		msg = { :status => "ok", :message => @entry.id }
+    		msg = @entry.id
     		format.json { render :json => msg }
 		end
-	end
-
-	def searchEntries # POST /entries/search json title
-		query = params[:ent][:title]
-		@log.debug('EntController::searchEntries: Got query title: "%s"' % query)
-		# match .*titles.* and order in descending creation order
-		@entries = Ent.order(:created_at => :desc).
-						where('title like ?', "%#{query}%")
-
-		respond_to do |format|
-    		msg = { :status => "ok", :message => @entries }
-    		format.json { render :json => msg }
-		end		
 	end
 
 	def getFullEntry # GET /entry/{entry id}
@@ -50,17 +37,20 @@ class EntController < ActionController::Base
 		@entry = Ent.find(params[:id])
 
 		respond_to do |format|
-			msg = { :status => "ok", :message => @entry }
+			msg = @entry
 			format.json { render :json => msg }
 	 	end
 	end
 
+	## Always returns entries in descending creation time order.
 	def getEntries # Get /entries/:journal_id
+		query = params[:journal_id]
+		@log.debug("getEntries: Query " + query)
 		@entries = Ent.order(:created_at => :desc).
 					where(:journal_id => params[:journal_id])
 
 		respond_to do |format|
-			msg = { :status => "ok", :message => @entries }
+			msg = @entries
 			format.json { render :json => msg }
 	 	end
 	end

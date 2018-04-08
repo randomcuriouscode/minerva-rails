@@ -9,22 +9,29 @@ class JournalController < ActionController::Base
 
 	def createJournal # POST /journals/
 		@journal = Journal.create(:title => params[:journal][:title])
+
+		respond_to do |format|
+			msg = @journal
+			format.json { render :json => msg }
+	 	end
 	end
 
 	def getAllJournals # GET /journals/all
 		@journals = Journal.all
 
 		respond_to do |format|
-			msg = { :status => "ok", :message => @journals }
+			msg = @journals
 			format.json { render :json => msg }
 	 	end
 	end
 
-	def getJournals # GET /journals/title query 'title'
-		@journals = Journal.where(:title => params[:journal][:title])
+	def searchJournals # POST /journals/search query 'title'
+		query = params[:journal][:title]
+		@journals = Journal.order(:created_at => :desc).
+						where('title like ?', "%#{query}%")
 
 		respond_to do |format|
-			msg = { :status => "ok", :message => @journals }
+			msg = @journals
 			format.json { render :json => msg }
 	 	end
 	end

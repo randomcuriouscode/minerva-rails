@@ -1,7 +1,7 @@
 Minerva Rails
 ================
 
-Minerva is a Ruby on Rails + Bootstrap + CSS + Javascript journaling application
+Minerva is a Ruby on Rails + Bootstrap + CSS + React.JS journaling application
 
 The primary features supported are:
 
@@ -31,9 +31,21 @@ This application requires:
 
 - Ruby 2.4.1
 - Rails 5.1.6
+- Node.js 7.1.2 for react rendering and webpack
 
 Getting Started
 ---------------
+
+To setup `React-Rails`, execute:
+
+```
+$ rails webpacker:install
+$ rails webpacker:install:react
+```
+
+[You may also require yarn for Node](https://yarnpkg.com/lang/en/docs/install/)
+
+
 
 If issues are encountered with the `responders` gem, execute:
 
@@ -47,6 +59,7 @@ Documentation and Support
 
 Issues
 -------------
+1. If the database is modified from an external source (ex. a second client), the page must be reloaded, there is no polling for new data.
 
 Similar Projects
 ----------------
