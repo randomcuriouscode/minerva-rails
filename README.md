@@ -1,6 +1,8 @@
 Minerva Rails
 ================
 
+![](https://github.com/rpg711/minerva-rails/blob/master/documentation/app_screenshot1.png)
+
 Minerva is a Ruby on Rails + Bootstrap + CSS + React.JS journaling application
 
 The purpose of this application is to focus on the core journaling functionality 
